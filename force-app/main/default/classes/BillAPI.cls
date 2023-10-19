@@ -1,3 +1,26 @@
+/*
+Populate the getBills method, which will create and insert a list of Bill__c object records, and then return the inserted Bill__c object records.
+Utilize the Named Credential in the setEndpoint method.
+Utilize the GET keyword in the setMethod method.
+Utilize the JSON.deserialize() method to deserialize the JSON body we receive from the HTTP GET Call into a List of BillWrapper objects (hint: “List<BillWrapper> bwList = (List<BillWrapper>)JSON.deserialize(responseBody, List<BillWrapper>.class”);
+Create a List of Active Accounts (Active__c = ‘Yes’) using a SOQL query, and iterate over it, 
+putting the Account Name and Account Id in a Map<String, Id>.
+Iterate over the list of BillWrappers.
+Using functions of the newly populated Map<String, Id> 
+to match the Account Name in the individual BillWrapper to the Account Id value in the Map<String, Id>. 
+Hint: https://developer.salesforce.com/docs/atlas.en-us.apexref.meta/apexref/apex_methods_system_map.htm
+Match the billId of the BillWrapper to the Bill_Id__c of the Bill To Insert.
+Use the following to match the BillWrapper balance to the Balance__c of
+ the Bill To Insert: billToInsert.Balance__c = Decimal.valueOf(bw.balance.replace(‘$’, ”));
+Add each new bill to a list of Bills To Insert.
+Insert Bills To Insert.
+Query for Inserted Bills.
+Return Queried For Bills.
+To test your code, call the getBills method in Anonymous Apex, which will create your first set of bills to test with when successfully completed:
+BillAPI.getBills();
+
+*/
+
 public with sharing class BillAPI {
     
     public static void getBills() {
