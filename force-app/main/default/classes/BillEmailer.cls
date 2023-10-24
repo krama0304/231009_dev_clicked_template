@@ -17,10 +17,13 @@ public with sharing class BillEmailer {
 			//semail.setBccAddresses(sendingToBccAdd);
 			//String[] sendingTocAdd = new String[]{''};
 			//semail.setCcAddresses(sendingTocAdd);
-			semail.setSubject('Your Cricket Statement is Ready');
-			semail.setPlainTextBody(
-				'Your most recent Cricket bill is available online. If you have already made this payment, no further action is required.'
+
+			semail.setSubject(
+				'Your Cricket Wirless Monthly Bill Statement is Ready for the month of ' +
+					DateTime.now().format('MMMM') +' '
+					+Date.Today().Year()
 			);
+			semail.setPlainTextBody('Dear Valued Customer ,' + '\n \n' + 'Attached is your current bill.');
 			Messaging.EmailFileAttachment attach = new Messaging.EmailFileAttachment();
 			attach.Body = emailsWithBills.get(email);
 			attach.FileName =

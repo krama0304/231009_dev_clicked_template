@@ -1,5 +1,38 @@
-<apex:page standardController="Bill__c" renderAs="pdf">
-
+<apex:page standardController="Bill__c" renderAs="pdf" applyBodyTag="false">
+    <head>
+        <style type="text/css" media="print">
+            .stationName {
+                text-align: left;
+            	font-weight: bold;
+            	font-size: 12pt;
+            	margin: 75px 0px  0px;
+            }
+            
+            table {
+            	width: 100%;
+                
+            }
+            .sectionHeader {
+            	width: 100%;
+            	background-color: #eee;
+            	font-size: 16pt;
+            	padding: 5px;
+               	margin: 20px 0px;
+            	font-weight: bold;
+                border-spacing: 20px;
+                border-style: none;
+            }
+           
+            
+            .columncHeader{
+                border: solid black; 
+                border-width: 1px 1px 1px 1px;
+                text-align: left;
+                padding-left: 10px;
+               
+            }
+        </style>
+    </head>
     <apex:outputText value="{!Bill__c.Name}" rendered="false" />
     <apex:outputText value="{!Bill__c.Balance__c}" rendered="false" />
     <apex:outputText value="{!Bill__c.Bill_Id__c}" rendered="false" />
@@ -7,7 +40,8 @@
     </apex:outputText>
     <!--<h4> You are looking at the Most Recent Bill for {!Bill__c.Account__r.Name}.</h4>-->
 
-    <apex:panelGrid columns="2" id="theGrid" style="width:100%;border-spacing: 20px;">
+    <apex:panelGrid columns="2" id="theGrid" headerClass="sectionHeader" >
+
         <apex:panelGroup id="theGroup1">
             <h3>
                 <apex:outputLabel value="{!$ObjectType.Account.fields.Email__c.Label}" />
@@ -30,7 +64,7 @@
             <apex:outputText value="{!Bill__c.Account__r.BillingStreet}" id="billingAddressStreet" />
             <br/>
             <apex:outputText value="{!Bill__c.Account__r.BillingCity}" id="billingAddressCity" /> ,
-            <apex:outputText value="{!Bill__c.Account__r.BillingState}" id="billingAddressState" />
+            <apex:outputText value="{!Bill__c.Account__r.BillingCountry}" id="billingAddressCountry" />
             <br/>
             <apex:outputText value="{!Bill__c.Account__r.BillingPostalCode}" id="billingAddressPostalcode" />
         </apex:panelGroup>
@@ -41,18 +75,18 @@
             <apex:outputText value="{!Bill__c.Account__r.ShippingStreet}" id="shippingAddressStreet" />
             <br/>
             <apex:outputText value="{!Bill__c.Account__r.ShippingCity}" id="shippingddressCity" /> ,
-            <apex:outputText value="{!Bill__c.Account__r.ShippingState}" id="shippingAddressState" />
+            <apex:outputText value="{!Bill__c.Account__r.ShippingCountry}" id="ShippingaddressCountry" />
             <br/>
             <apex:outputText value="{!Bill__c.Account__r.ShippingPostalCode}" id="shippingAddressPostalcode" />
         </apex:panelGroup>
     </apex:panelGrid>
-
-    <apex:pageBlock title="Bill Summary">
-        <apex:pageBlockTable value="{!Bill__c}" var="item" border="true" style="width:100%; text-align: left;">
+    <h1 class="stationName">Bill Summary</h1>
+    <apex:pageBlock >
+        <apex:pageBlockTable value="{!Bill__c}" var="item" >
             <!-- header value dispaly our own cutom column header use apex:column>-->
-            <apex:column headerValue="Name">{!item.name}</apex:column>
-            <apex:column value="{!item.Balance__c}" />
-            <apex:column value="{!item.Bill_Id__c}" />
+            <apex:column headerValue="Name"  styleClass="columncHeader">{!item.name}</apex:column>
+            <apex:column value="{!item.Balance__c}"  styleClass="columncHeader"/>
+            <apex:column value="{!item.Bill_Id__c}"   styleClass="columncHeader" />
 
         </apex:pageBlockTable>
     </apex:pageBlock>
