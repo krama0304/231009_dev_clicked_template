@@ -17,7 +17,8 @@ public with sharing class BillEmailer {
 			//semail.setBccAddresses(sendingToBccAdd);
 			//String[] sendingTocAdd = new String[]{''};
 			//semail.setCcAddresses(sendingTocAdd);
-
+			semail.setTargetObjectId( UserInfo.getUserId() );
+			semail.setSaveAsActivity( false );
 			semail.setSubject(
 				'Your Cricket Wirless Monthly Bill Statement is Ready for the month of ' +
 					DateTime.now().format('MMMM') +' '

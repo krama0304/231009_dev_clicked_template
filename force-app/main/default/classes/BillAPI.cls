@@ -22,8 +22,9 @@ BillAPI.getBills();
 */
 
 public with sharing class BillAPI {
-	public static List<Bill__c> getBills() {
+	public static List<Id> getBills() {
 		List<Bill__c> billList = new List<Bill__c>();
+		List<Id> newIds = new List<id>();
 		HttpRequest req = new HttpRequest();
 		req.setEndpoint('callout:Billing_API');
 		req.setMethod('GET');
@@ -59,7 +60,7 @@ public with sharing class BillAPI {
 				if (sr.isSuccess()) {
 					system.debug('Operation was successful');
 					//Operation was successful
-					//billId.add(sr.id);
+					newIds.add(sr.id);
 				} else {
 					// Operation failed, so get all errors
 					for (Database.Error err : sr.getErrors()) {
@@ -70,7 +71,7 @@ public with sharing class BillAPI {
 			}
 		}
 
-		return billList;
+		return newIds;
 	}
 
 	public class BillWrapper {
