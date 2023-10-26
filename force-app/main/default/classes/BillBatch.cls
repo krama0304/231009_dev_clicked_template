@@ -27,7 +27,7 @@ public with sharing class BillBatch implements Database.Batchable<sObject>, Data
 		for (Account a : scope) {
 			if (a.Bill_By_Email__c) {
 				receivesBillByEmail.add(a.Id);
-				//BillAPI.getBills();
+				
 			}
 		}
 		recentcretedId = BillAPI.getBills();
