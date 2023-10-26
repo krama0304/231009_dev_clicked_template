@@ -51,25 +51,25 @@ public with sharing class BillBatch implements Database.Batchable<sObject>, Data
 		Map<Id, String> emailMap = new Map<Id, String>();
 
 		for (Account acc : accountList) {
-			for (bill__c c : acc.Bills__r) {
+			billMap.put(acc.id, acc.Bills__r[0].id);
+
+			/*for (bill__c c : acc.Bills__r) {
 				billMap.put(acc.id, c.id);
-			}
-			
+			}*/
+
 			emailMap.put(acc.id, acc.Email__c);
-			
 		}
 		system.debug(billmap.size());
 		system.debug('this.receivesBillByEmail' + this.receivesBillByEmail.size());
 		system.debug(emailMap.size());
-		
+
 		for (Id accid : billMap.keySet()) {
 			Id billId = billMap.get(accid);
 			PageReference pageRef = new PageReference('/apex/BillVFP?id=' + billId);
 			Blob pdfBlob = pageRef.getContentAsPDF();
-			
+
 			Map<String, Blob> sendMap = new Map<String, Blob>{ emailMap.get(accid) => pdfBlob };
 			BillEmailer.sendEmails(sendMap);
-		
 		}
 
 		//We will then iterate over the results of this query and associate the Id of
