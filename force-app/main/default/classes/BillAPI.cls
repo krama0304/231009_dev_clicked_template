@@ -34,7 +34,7 @@ public with sharing class BillAPI {
 		List<BillWrapper> billWrap;
 		if (res.getStatusCode() == 200) {
 			billWrap = (list<BillWrapper>) JSON.deserialize(res.getBody(), list<BillWrapper>.class);
-			List<Account> activeAcc = [SELECT id, name FROM Account WHERE Active__c = 'Yes' WITH SECURITY_ENFORCED];
+			List<Account> activeAcc = [SELECT id, name FROM Account WHERE Active__c = 'Yes' WITH USER_MODE];
 			Map<String, Id> accMap = new Map<String, Id>();
 			for (Account acc : activeAcc) {
 				accMap.put(acc.Name, acc.Id);
@@ -55,7 +55,7 @@ public with sharing class BillAPI {
 			boolean allOrNone = false;
 			//Upsert & Extrnal ID
 			// Database.UpsertResult[] srList=Database.insert(billList,externalIdField,allOrNone);
-			Database.SaveResult[] srList = Database.insert(billList, allOrNone);
+			Database.SaveResult[] srList = Database.insert(billList, allOrNone,AccessLevel.USER_MODE);
 			for (Database.SaveResult sr : srList) {
 				if (sr.isSuccess()) {
 					system.debug('Operation was successful');

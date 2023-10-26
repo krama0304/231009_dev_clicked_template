@@ -14,6 +14,7 @@ public with sharing class BillBatch implements Database.Batchable<sObject>, Data
 			'SELECT Id,Name,Bill_By_Email__c, Active__c FROM Account where Active__c  = ' +
 			'\'Yes\'' +
 			'AND Bill_By_Email__c != null AND Email__c != null';
+		//return Database.getQueryLocator(query,AccessLevel.USER_MODE);
 		return Database.getQueryLocator(query);
 	}
 
@@ -27,7 +28,6 @@ public with sharing class BillBatch implements Database.Batchable<sObject>, Data
 		for (Account a : scope) {
 			if (a.Bill_By_Email__c) {
 				receivesBillByEmail.add(a.Id);
-				
 			}
 		}
 		recentcretedId = BillAPI.getBills();
