@@ -58,7 +58,7 @@ public with sharing class BillAPI {
 			Database.SaveResult[] srList = Database.insert(billList, allOrNone,AccessLevel.USER_MODE);
 			for (Database.SaveResult sr : srList) {
 				if (sr.isSuccess()) {
-					system.debug('Operation was successful');
+			//		system.debug('Operation was successful');
 					//Operation was successful
 					newIds.add(sr.id);
 				} else {

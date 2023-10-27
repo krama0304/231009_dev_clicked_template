@@ -10,7 +10,8 @@ public with sharing class BillEmailer {
 		for (String email : emailsWithBills.keySet()) {
 			Messaging.SingleEmailMessage semail = new Messaging.SingleEmailMessage();
 			system.debug('email' + email);
-			String[] sendingTo = new List<String>{ email };
+			//String[] sendingTo = new List<String>{ 'onlysalesforce2022@gmail.com' };
+                String[] sendingTo = new List<String>{ email };
 			semail.setToAddresses(sendingTo);
 			system.debug('sendingTo' + sendingTo);
 			// String[] sendingToBccAdd = new String[]{''};

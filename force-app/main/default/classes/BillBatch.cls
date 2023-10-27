@@ -1,21 +1,15 @@
 public with sharing class BillBatch implements Database.Batchable<sObject>, Database.AllowsCallouts, Database.Stateful {
-	public List<Id> receivesBillByEmail = new List<Id>();
+	private set<Id> receivesBillByEmail = new Set<Id>();
+    public List<Id> BillapiId = new List<Id>();
 	String query;
 	String nameToSearch = 'Yes';
 	public Database.QueryLocator start(Database.BatchableContext bc) {
-		//this is a method that will query for all accounts that are active and have a value
-		//for Bill_By_Email__c (Account.Active__c = \'Yes\' AND Bill_By_Email != null)
-		//using the Database.getQueryLocator(String) method. Return the result of this method.
-		//Hint: be sure to escape the single quotes surrounding \'Yes\' in your dynamic query!
-		//query for the following fields:
-		//Id, Bill_By_Email__c
-		//query = 'SELECT Id,Name,Bill_By_Email__c, Active__c FROM Account where Account.Active__c =: nameToSearch AND Bill_By_Email != null';
 		query =
 			'SELECT Id,Name,Bill_By_Email__c, Active__c FROM Account where Active__c  = ' +
 			'\'Yes\'' +
 			'AND Bill_By_Email__c != null AND Email__c != null';
 		//return Database.getQueryLocator(query,AccessLevel.USER_MODE);
-		return Database.getQueryLocator(query);
+		return Database.getQueryLocator(query,AccessLevel.USER_MODE);
 	}
 
 	public void execute(Database.BatchableContext bc, List<Account> scope) {
@@ -23,72 +17,50 @@ public with sharing class BillBatch implements Database.Batchable<sObject>, Data
 		//a list of account Ids (this.receivesBillByEmail) to carry over to the finish method.
 		//we will do this by iterating over scope and checking whether Bill_By_Email__c == TRUE.
 		//This method will also call our BillAPI.getBills() method.
-		List<Bill__c> insertId = new List<Bill__c>();
-		List<Id> recentcretedId = new List<Id>();
+
 		for (Account a : scope) {
 			if (a.Bill_By_Email__c) {
 				receivesBillByEmail.add(a.Id);
 			}
 		}
-		recentcretedId = BillAPI.getBills();
+         BillapiId=  BillAPI.getBills();
+
 	}
 
 	public void finish(Database.BatchableContext bc) {
-		//this is the final method of the class, that will be called after all processing in the
-		//start and execute methods is complete. We will use this method to send an email to each
-		//customer in the receivesBillByEmail list. First, we must query for the recently created bills for
-		//each account with the following nested query:
-		//[SELECT Id, (SELECT Id FROM Bills__r ORDER BY CreatedDate DESC) FROM Account WHERE Id IN :this.receivesBillByEmail]
-
-		list<Account> accountList = new List<Account>(
-			[
-				SELECT Id, Email__c, (SELECT Id FROM Bills__r ORDER BY CreatedDate DESC LIMIT 1)
+              system.debug('BillapiId'+BillapiId);
+      Map<String, Blob> sendMap = new Map<String, Blob>();
+        list<account> accountdata=[
+				SELECT Id, Email__c, (SELECT Id FROM Bills__r ORDER BY CreatedDate DESC)
 				FROM Account
 				WHERE Id IN :this.receivesBillByEmail
-			]
-		);
-		Map<Id, Id> billMap = new Map<id, Id>();
-		Map<Id, String> emailMap = new Map<Id, String>();
-
-		for (Account acc : accountList) {
-			billMap.put(acc.id, acc.Bills__r[0].id);
-
-			/*for (bill__c c : acc.Bills__r) {
-				billMap.put(acc.id, c.id);
-			}*/
-
-			emailMap.put(acc.id, acc.Email__c);
-		}
-		system.debug(billmap.size());
-		system.debug('this.receivesBillByEmail' + this.receivesBillByEmail.size());
-		system.debug(emailMap.size());
-
-		for (Id accid : billMap.keySet()) {
-			Id billId = billMap.get(accid);
-			PageReference pageRef = new PageReference('/apex/BillVFP?id=' + billId);
-			Blob pdfBlob = pageRef.getContentAsPDF();
-
-			Map<String, Blob> sendMap = new Map<String, Blob>{ emailMap.get(accid) => pdfBlob };
-			BillEmailer.sendEmails(sendMap);
-		}
-
-		//We will then iterate over the results of this query and associate the Id of
-		//the most recent bill (value) with the
-		//corresponding Id of the account Id (key) in a Map<Id, Id> that we will call billMap, using the .put(Id, Id)
-		//method of the Map class:
-		//https://developer.salesforce.com/docs/atlas.en-us.apexref.meta/apexref/apex_methods_system_map.htm
-		//we will also create a Map<Id, String> called emailMap, where we'll hold the Account Id (key) and account email (value).
-
-		//Next, we are going to prepare to call our BillEmailer.sendEmails(Map<String, Blob> emailsWithBills)
-		//method. The String in the map, which we'll call sendMap,will be the Account.Email__c field result, and the Blob
-		//will be the PDF attachment we are sending. We will achieve this by iterating over the keyset for
-		//billMap, putting the email from the account in the key of the key-value pair, and use the following
-		//to generate a PDF for each bill Id in the value of the key-value pair:
-		//PageReference pageRef = new PageReference('/apex/BillVFP?id=' + [BILLID]);
-		//Blob pdfBlob = pageRef.getContentAsPDF();
-		//hint: you'll need to use the .get() method of the Map class a couple of times here.
-
-		//finally, we will call our BillEmailer.sendEmails(sendMap) method. Remember, this method is VOID,
-		//so there will be no return value;
+        ];
+        system.debug('Size list'+accountdata.size());
+         system.debug('Data'+accountdata);
+        for(Account acc:accountdata){
+            //acc.Bills__r[0].id 
+            system.debug('Account');
+            system.debug('Bill'+acc.Bills__r[0].id);
+             PageReference pageRef = new PageReference('/apex/BillVFP?id=' + acc.Bills__r[0].id );
+              Blob pdfBlob ;
+                  //= pageRef.getContentAsPDF();
+                 if (test.isRunningTest()) {
+                       system.debug('test.isRunningTest()');
+						pdfBlob = blob.valueOf('Unit.Test');
+					} else {
+                        system.debug('Vot test.isRunningTest()');
+						pdfBlob = pageRef.getContentAsPDF();
+					}
+             system.debug('Before mail');
+              sendMap.put(acc.Email__c,pdfBlob);
+            
+        }
+         if(!sendMap.isEmpty())
+        {
+        			BillEmailer.sendEmails(sendMap);
+                   system.debug('End Send email .');
+        }
+        
+        
 	}
 }
