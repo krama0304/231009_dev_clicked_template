@@ -1,0 +1,14 @@
+<template>
+    <lightning-card>
+
+        <h1 slot="title">Component C</h1>
+
+        <lightning-input type="text" value={userName} label="Enter text pass to Parent"
+            onchange={handlenameChange}></lightning-input>
+        <!-- <lightning-input type="text" lwc:ref="username" label="Using Lec:Ref Parent Search"
+            onchange={handlenameChange}></lightning-input>-->
+        <lightning-button label="Submit" slot="actions" onclick={handleClick}></lightning-button>
+
+    </lightning-card>
+
+</template>

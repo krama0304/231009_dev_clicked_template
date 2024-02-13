@@ -1,0 +1,9 @@
+<template>
+    <div class="slds-theme_default slds-box">
+        <lightning-record-form object-api-name="Account" record-id={recordId} layout-type="Compact" mode="view"
+            columns="5"></lightning-record-form>
+        <lightning-record-form object-api-name="Account" record-id={recordId} fields={fields} onsuccess={handleSuccess}>
+        </lightning-record-form>
+
+    </div>
+</template>

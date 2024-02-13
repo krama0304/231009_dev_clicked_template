@@ -1,0 +1,8 @@
+<template>
+
+    <lightning-card>
+        <h1 slot="title">Component A (Child to Parent Communication)</h1>
+        {nameFromC}
+        <c-component-b onusernamechange={handleChilddata}> </c-component-b>
+    </lightning-card>
+</template>

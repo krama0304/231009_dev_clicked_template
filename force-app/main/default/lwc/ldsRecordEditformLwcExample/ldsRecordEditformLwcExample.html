@@ -1,0 +1,44 @@
+<template>
+    <div class="slds-theme_default slds-box">
+        <lightning-card title="LDS Record-Edit Form">
+
+            <!--Custom Toast Message :Begin-->
+            <template if:true={showToastBar}>
+                <div class="slds-notify_container">
+                    <div class="slds-notify slds-notify_toast slds-theme_success" role="status">
+                        <div class="slds-notify__content">
+                            <h2 class="slds-text-heading_small">Sucessfully Contact Created [{contactId}]" -Click here
+                                to close
+
+                            </h2>
+                        </div>
+                        <lightning-button-icon icon-name="utility:close" size="small" variant="Success"
+                            class="slds-var-p-around_small" alternative-text="Settings" title="Close"
+                            onclick={closeModel}></lightning-button-icon>
+
+
+                    </div>
+                </div>
+
+            </template>
+            <!--Custom Toast Message :End-->
+
+
+
+
+            <lightning-record-edit-form object-api-name="Contact" fields={fields} onsuccess={handleSuccess}>
+                <lightning-input-field field-name={accountIdField} value={recordId}> </lightning-input-field>
+
+                <lightning-input-field field-name={salutationField} value="Prof"> </lightning-input-field>
+                <lightning-input-field field-name={fnameField}> </lightning-input-field>
+                <lightning-input-field field-name={lnameField}> </lightning-input-field>
+
+                <lightning-button label="Create New" variant="Brand" class="slds-m-top_small"
+                    type="submit"></lightning-button>
+                <!--  <lightning-input-field field-name="accountId" value={recordId}> </lightning-input-field>-->
+            </lightning-record-edit-form>
+
+
+        </lightning-card>
+    </div>
+</template>

@@ -1,0 +1,15 @@
+<template>
+    <lightning-card>
+
+        <h1 slot="title">Component A</h1>
+
+        <lightning-input type="text" value={searchText} label="Enter Parent Search"
+            onchange={handlenameChange}></lightning-input>
+        <lightning-input type="text" lwc:ref="username" label="Using Lec:Ref Parent Search"
+            onchange={handlenameChange}></lightning-input>
+        <lightning-button label="Submit" slot="actions" onclick={handleClick}></lightning-button>
+        <!--<c-lwc-child-componentcomm lwc:ref="child1" name={parentusername}></c-lwc-child-componentcomm>-->
+        <c-lwc-child-componentcomm lwc:ref="child1"></c-lwc-child-componentcomm>
+    </lightning-card>
+
+</template>
