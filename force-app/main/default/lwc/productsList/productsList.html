@@ -1,0 +1,20 @@
+<template>
+    <lightning-card title="Catalog" icon-name="standard:catalog">
+        <lightning-layout multiple-rows horizontal-align="center">
+
+            <template lwc:if={isproductsloaded}>
+                <!--  <template for:each={products} for:item="product">
+                    <p key={product.productRecord.Id}>{product.productRecord.Name} {product.productRecord.Id} </p>
+                </template>-->
+                <template for:each={products} for:item="product">
+                    <lightning-layout-item key={product.productRecord.Id} size="12" small-device-size="6"
+                        medium-device-size="4" large-device-size="3">
+                        <c-product-tile product={product.productRecord} default-quantity={product.quantity}
+                            added-to-cart={product.isAddedToCart} onaddedtocart={handleAddToCart}
+                            onremovedfromcart={handleRemovedFromCart}></c-product-tile>
+                    </lightning-layout-item>
+                </template>
+            </template>
+        </lightning-layout>
+    </lightning-card>
+</template>

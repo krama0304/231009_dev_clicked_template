@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<LightningMessageChannel xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Sends selected Product to other components.</description>
+    <isExposed>true</isExposed>
+    <lightningMessageFields>
+        <description>Map Object that contains the selected product with quantity</description>
+        <fieldName>selectedData</fieldName>
+    </lightningMessageFields>
+    <masterLabel>ProductSelectedChannel</masterLabel>
+</LightningMessageChannel>
