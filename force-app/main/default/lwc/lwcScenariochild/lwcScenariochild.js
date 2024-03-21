@@ -5,17 +5,17 @@ export default class LwcScenariochild extends LightningElement {
 	name;
 	phone;
 	email;
-	showname() {
+	@api showname() {
 		this.template.querySelector("lightning-input[data-id=in1]").class = "slds-show";
 		this.template.querySelector("lightning-input[data-id=in2]").class = "slds-hide";
 		this.template.querySelector("lightning-input[data-id=in3]").class = "slds-hide";
 	}
-	showphone() {
+	@api showphone() {
 		this.template.querySelector("lightning-input[data-id=in2]").class = "slds-show";
 		this.template.querySelector("lightning-input[data-id=in1]").class = "slds-hide";
 		this.template.querySelector("lightning-input[data-id=in3]").class = "slds-hide";
 	}
-	showemail() {
+	@api showemail() {
 		this.template.querySelector("lightning-input[data-id=in3]").class = "slds-show";
 		this.template.querySelector("lightning-input[data-id=in2]").class = "slds-hide";
 		this.template.querySelector("lightning-input[data-id=in1]").class = "slds-hide";
