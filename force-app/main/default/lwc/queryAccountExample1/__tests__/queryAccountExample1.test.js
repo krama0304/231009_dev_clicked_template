@@ -1,4 +1,59 @@
-import { createElement } from 'lwc';
+import { createElement } from "lwc";
+import QueryAccountExample1 from "c/queryAccountExample1";
+import getRecords from "@salesforce/apex/AccountApex.queryAccount";
+
+// Mocking the apex method
+jest.mock(
+	"@salesforce/apex/AccountApex.queryAccount",
+	() => ({
+		default: jest.fn()
+	}),
+	{ virtual: true }
+);
+
+describe("c-query-account-example-1", () => {
+	afterEach(() => {
+		while (document.body.firstChild) {
+			document.body.removeChild(document.body.firstChild);
+		}
+		jest.clearAllMocks();
+	});
+
+	it("renders data when apex returns data", () => {
+		// Arrange
+		const testData = [
+			{ Id: "001", Name: "Test Account", Rating: "Hot", Industry: "Technology" },
+			{ Id: "002", Name: "Another Account", Rating: "Warm", Industry: "Finance" }
+		];
+		getRecords.mockResolvedValue({ data: testData });
+
+		// Act
+		const element = createElement("c-query-account-example-1", { is: QueryAccountExample1 });
+		document.body.appendChild(element);
+
+		// Assert
+		return Promise.resolve().then(() => {
+			const dataRows = element.shadowRoot.querySelectorAll("lightning-datatable lightning-datatable-row");
+			expect(dataRows.length).toBe(testData.length);
+		});
+	});
+
+	it("handles error when apex throws error", () => {
+		// Arrange
+		getRecords.mockRejectedValue({ error: "Some error" });
+
+		// Act
+		const element = createElement("c-query-account-example-1", { is: QueryAccountExample1 });
+		document.body.appendChild(element);
+
+		// Assert
+		return Promise.resolve().then(() => {
+			expect(element.showData).toBe(false);
+		});
+	});
+});
+
+/*import { createElement } from 'lwc';
 import QueryAccountExample1 from 'c/queryAccountExample1';
 
 describe('c-query-account-example1', () => {
@@ -22,4 +77,4 @@ describe('c-query-account-example1', () => {
         // const div = element.shadowRoot.querySelector('div');
         expect(1).toBe(1);
     });
-});
+});*/
