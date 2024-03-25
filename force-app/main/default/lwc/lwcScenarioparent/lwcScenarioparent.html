@@ -8,5 +8,7 @@
 		value={selectedTypeValue}
 	></lightning-combobox>
 	<p>Selected value is: {selectedTypeValue}</p>
-	<c-lwc-Scenariochild selectedpicklist={selectedTypeValue}> </c-lwc-Scenariochild>
+	<template if:true={showChild}>
+		<c-lwc-Scenariochild selectedpicklist={selectedTypeValue}> </c-lwc-Scenariochild>
+	</template>
 </template>

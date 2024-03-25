@@ -1,23 +1,22 @@
 import { LightningElement, api } from "lwc";
 
 export default class LwcScenariochild extends LightningElement {
-	@api selectedpicklist;
+	@api selectedpicklist = "";
 	name;
 	phone;
 	email;
-	@api showname() {
-		this.template.querySelector("lightning-input[data-id=in1]").class = "slds-show";
-		this.template.querySelector("lightning-input[data-id=in2]").class = "slds-hide";
-		this.template.querySelector("lightning-input[data-id=in3]").class = "slds-hide";
+
+	@api selectedValue;
+
+	get showName() {
+		return this.selectedpicklist === "Input1" ? true : false;
 	}
-	@api showphone() {
-		this.template.querySelector("lightning-input[data-id=in2]").class = "slds-show";
-		this.template.querySelector("lightning-input[data-id=in1]").class = "slds-hide";
-		this.template.querySelector("lightning-input[data-id=in3]").class = "slds-hide";
+
+	get showPhone() {
+		return this.selectedpicklist === "Input2" ? true : false;
 	}
-	@api showemail() {
-		this.template.querySelector("lightning-input[data-id=in3]").class = "slds-show";
-		this.template.querySelector("lightning-input[data-id=in2]").class = "slds-hide";
-		this.template.querySelector("lightning-input[data-id=in1]").class = "slds-hide";
+
+	get showEmail() {
+		return this.selectedpicklist === "Input3" ? true : false;
 	}
 }

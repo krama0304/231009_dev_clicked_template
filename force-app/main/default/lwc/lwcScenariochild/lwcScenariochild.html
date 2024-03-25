@@ -1,7 +1,13 @@
 <template>
 	<div class="slds-var-p-around_medium lgc-bg">
-		<lightning-input type="text" label="Name" value={name} class="slds-hide" data-id="in1"></lightning-input>
-		<lightning-input type="text" label="Phone" value={phone} class="slds-hide" data-id="in2"> </lightning-input>
-		<lightning-input type="text" label="Email" value={email} class="slds-hide" data-id="in3"></lightning-input>
+		<template if:true={showName}>
+			<lightning-input type="text" label="Name" value={name} data-id="in1"></lightning-input>
+		</template>
+		<template if:true={showPhone}>
+			<lightning-input type="text" label="Phone" value={phone} data-id="in2"> </lightning-input>
+		</template>
+		<template if:true={showEmail}>
+			<lightning-input type="text" label="Email" value={email} data-id="in3"></lightning-input>
+		</template>
 	</div>
 </template>
