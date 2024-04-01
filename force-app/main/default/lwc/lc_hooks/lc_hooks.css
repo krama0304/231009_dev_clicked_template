@@ -1,0 +1,10 @@
+.dynamicCSS1 {
+	background-color: #007cba;
+	color: black;
+}
+.classshow {
+	visibility: visible;
+}
+.classhide {
+	visibility: hidden;
+}

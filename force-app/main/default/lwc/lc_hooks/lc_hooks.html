@@ -1,0 +1,14 @@
+<template>
+	<p>testing</p>
+
+	<lightning-combobox
+		placeholder="Select Input Type"
+		name="type"
+		label="Select Type"
+		options={Options}
+		onchange={handleTypeChange}
+		value={selectedTypeValue}
+	></lightning-combobox>
+
+	<c-chilcomp selectedvaluesinput={selectedTypeValue}></c-chilcomp>
+</template>
